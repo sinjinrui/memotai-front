@@ -1,0 +1,111 @@
+.header {
+  background-color: #111;
+  color: white;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* PC表示 */
+.nav {
+  display: flex;
+  gap: 24px;
+}
+
+.nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.nav a:hover {
+  opacity: 0.7;
+}
+
+/* ハンバーガー */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 24px;
+  height: 2px;
+  background: white;
+  transition: 0.3s ease;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center; /* ← 中央揃え */
+  gap: 10px;
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+/* アイコン用の固定ボックス */
+.nav-item .icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* SVGを完全中央に */
+.nav-item .icon svg {
+  width: 18px;
+  height: 18px;
+  display: block; /* ← 重要（inline問題回避） */
+}
+
+/* スマホ */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .nav {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    flex-direction: column;
+    background-color: #222;
+    width: 100%;
+
+    /* ↓ アニメーション用 */
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+  }
+
+  .nav.open {
+    max-height: 300px; /* メニュー数に応じて調整 */
+    opacity: 1;
+  }
+
+  .nav a {
+    padding: 14px 16px;
+    border-bottom: 1px solid #333;
+  }
+}
