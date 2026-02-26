@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { 
   FiFileText, 
@@ -11,13 +12,14 @@ type NavItem = {
   label: string;
   href: string;
   icon: React.ReactNode;
+  type: "link" | "anchor";
 };
 
 const navItems: NavItem[] = [
-  { label: "キャラ対メモ", href: "#", icon: <FiFileText /> },
-  { label: "使い方", href: "#", icon: <FiHelpCircle /> },
-  { label: "ログイン", href: "#", icon: <FiLogIn /> },
-  { label: "インフォメーション", href: "#", icon: <FiInfo /> },
+  { label: "キャラ対メモ", href: "#", icon: <FiFileText />, type: "anchor" },
+  { label: "使い方", href: "#", icon: <FiHelpCircle />, type: "anchor" },
+  { label: "ログイン", href: "/login", icon: <FiLogIn />, type: "link" },
+  { label: "インフォメーション", href: "#", icon: <FiInfo />, type: "anchor" },
 ];
 
 
@@ -40,12 +42,19 @@ const Header: React.FC = () => {
         </button>
 
         <nav className={`nav ${isOpen ? "open" : ""}`}>
-          {navItems.map((item) => (
-            <a key={item.label} href={item.href} className="nav-item">
-              <span className="icon">{item.icon}</span>
-              <span>{item.label}</span>
-            </a>
-          ))}
+          {navItems.map((item) =>
+            item.type === "link" ? (
+              <Link key={item.label} to={item.href} className="nav-item">
+                <span className="icon">{item.icon}</span>
+                <span>{item.label}</span>
+              </Link>
+            ) : (
+              <a key={item.label} href={item.href} className="nav-item">
+                <span className="icon">{item.icon}</span>
+                <span>{item.label}</span>
+              </a>
+            )
+          )}
         </nav>
       </div>
     </header>
