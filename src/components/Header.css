@@ -32,7 +32,7 @@
   font-size: 14px;
 }
 
-.nav a:hover {
+.nav a:hover, button:hover {
   opacity: 0.7;
 }
 
@@ -104,7 +104,7 @@
     opacity: 1;
   }
 
-  .nav a {
+  .nav a, button {
     padding: 14px 16px;
     border-bottom: 1px solid #333;
   }

@@ -1,35 +1,64 @@
-import { Link } from "react-router-dom";
-import "./Auth.css";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"
+import api from "../lib/axios";
 
 const Signup: React.FC = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+
+    const login_id = (form.elements.namedItem("login_id") as HTMLInputElement).value;
+    const password = (form.elements.namedItem("password") as HTMLInputElement).value;
+    const password_confirmation = (form.elements.namedItem("password_confirmation") as HTMLInputElement).value;
+
+    try {
+      const res = await api.post("/signup", {
+        login_id,
+        password,
+        password_confirmation,
+      });
+
+      login(res.data.access_token, res.data.refresh_token);
+
+      alert("登録成功！");
+      navigate("/");
+    } catch (err: any) {
+      console.error(err.response?.data);
+      alert("登録失敗");
+    }
+  };
+
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>サインアップ</h2>
+        <h2>ユーザー登録</h2>
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>ログインID</label>
-            <input type="text" required />
+            <input name="login_id" required />
           </div>
 
           <div className="form-group">
             <label>パスワード</label>
-            <input type="password" required />
+            <input name="password" type="password" required />
           </div>
 
           <div className="form-group">
-            <label>パスワード（確認）</label>
-            <input type="password" required />
+            <label>パスワード確認</label>
+            <input name="password_confirmation" type="password" required />
           </div>
 
           <button type="submit" className="auth-button">
-            登録する
+            登録
           </button>
         </form>
 
         <p className="auth-link">
-          すでにアカウントをお持ちの方は <Link to="/login">ログイン</Link>
+          ログインは <Link to="/login">こちら</Link>
         </p>
       </div>
     </div>
