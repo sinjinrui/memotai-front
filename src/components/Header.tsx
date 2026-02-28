@@ -35,6 +35,7 @@ const Header: React.FC = () => {
     } catch (e) {
       console.error("logout failed", e);
     } finally {
+      setIsOpen(false);
       await logout(); // 🔥 Context側でstate更新
       navigate("/login");
     }

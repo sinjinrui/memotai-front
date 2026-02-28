@@ -1,0 +1,115 @@
+/* 固定ボトムバー */
+.bottom-bar {
+  position: fixed;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 24px;
+  pointer-events: none;
+}
+
+.char-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.character-icon {
+  position: relative;
+}
+
+/* ラベル */
+.label {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+
+  background: rgba(0,0,0,0.6);
+  padding: 2px 6px;
+  border-radius: 6px;
+
+  white-space: nowrap;
+}
+
+.vs-text {
+  font-size: 32px;
+  font-weight: 800;
+
+  color: rgba(255, 255, 255, 0.9);
+
+  text-shadow:
+    0 0 8px rgba(0,0,0,0.6);
+
+  letter-spacing: 2px;
+
+  display: flex;
+  align-items: center;
+  margin: 0 15px;
+}
+
+/* ドロワー */
+.drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80vh;
+  background: #111;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  z-index: 100;
+  padding-bottom: 80px;
+}
+
+.drawer.open {
+  transform: translateY(0);
+}
+
+.drawer-content {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 12px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.char-item {
+  width: 100%;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+/* 背景オーバーレイ */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 90;
+}
+
+/* スマホ */
+@media (max-width: 768px) {
+  .bottom-bar {
+    justify-content: space-between;
+  }
+
+  .drawer {
+    width: 100%;
+  }
+
+  .drawer-content {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}

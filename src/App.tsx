@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Header } from "./components";
+import { Header, BottomCharacterMenu } from "./components";
 import { Login, Signup } from "./pages";
 
 const App: React.FC = () => {
@@ -12,6 +12,7 @@ const App: React.FC = () => {
           <Route path="/signup" element={<Signup />} />
         </Routes>
       </main>
+      <BottomCharacterMenu />
     </BrowserRouter>
   );
 };
