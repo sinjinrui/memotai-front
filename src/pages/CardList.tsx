@@ -24,13 +24,14 @@ type Card = {
 }
 
 export default function CardList() {
-const [cards, setCards] = useState<Card[]>([])
-const [isCreating, setIsCreating] = useState(false)
-const [newText, setNewText] = useState("")
+  const [cards, setCards] = useState<Card[]>([])
+  const [isCreating, setIsCreating] = useState(false)
+  const [newText, setNewText] = useState("")
+  const [showArchived, setShowArchived] = useState(false)
 
   useEffect(() => {
     fetchCards()
-  }, [])
+  }, [showArchived])
 
   const fetchCards = async () => {
     try {
@@ -38,7 +39,8 @@ const [newText, setNewText] = useState("")
         params: {
           character_code: "001",
           enemy_code: "002",
-        },
+          archived: showArchived
+        }
       })
 
       setCards(res.data)
@@ -92,7 +94,7 @@ const [newText, setNewText] = useState("")
       })
     } catch (e) {
       console.error(e)
-      fetchCards() // 失敗したら巻き戻し
+      fetchCards()
     }
   }
 
@@ -118,12 +120,99 @@ const [newText, setNewText] = useState("")
     }
   }
 
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false)
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
+
+  const handleDeleteConfirmed = async () => {
+    if (!editingCard) return
+
+    try {
+      await api.delete(`/cards/${editingCard.id}`)
+
+      setCards(prev =>
+        prev.filter(c => c.id !== editingCard.id)
+      )
+
+      setEditingCard(null)
+      setEditText("")
+      setIsConfirmingDelete(false)
+
+      setToastMessage("メモを削除しました")
+
+      setTimeout(() => {
+        setToastMessage(null)
+      }, 3000)
+
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  const [isConfirmingArchive, setIsConfirmingArchive] = useState(false)
+  const handleArchiveConfirmed = async () => {
+    if (!editingCard) return
+
+    try {
+      await api.patch(`/cards/${editingCard.id}/archive`)
+
+      setCards(prev =>
+        prev.filter(c => c.id !== editingCard.id)
+      )
+
+      setEditingCard(null)
+      setIsConfirmingArchive(false)
+      setToastMessage("メモを完了にしました")
+
+      setTimeout(() => {
+        setToastMessage(null)
+      }, 3000)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  const [isConfirmingRestore, setIsConfirmingRestore] = useState(false)
+
+  const handleRestoreConfirmed = async () => {
+    if (!editingCard) return
+
+    try {
+      await api.patch(`/cards/${editingCard.id}/restore`)
+
+      // 完了リストから消す
+      if (showArchived) {
+        setCards(prev =>
+          prev.filter(c => c.id !== editingCard.id)
+        )
+      }
+
+      setEditingCard(null)
+      setIsConfirmingRestore(false)
+
+      setToastMessage("メモを通常に戻しました")
+      setTimeout(() => setToastMessage(null), 3000)
+
+    } catch (e) {
+      console.error(e)
+    }
+  }
+  
   return (
     <div className="card-container" >
+      <div
+        className={`toggle ${showArchived ? "archived" : ""}`}
+        onClick={() => setShowArchived(prev => !prev)}
+      >
+        <div className="toggle-slider" />
+        <span className="toggle-option">通常</span>
+        <span className="toggle-option">完了</span>
+      </div>
       {!isCreating && (
-        <button className="card-create-btn" onClick={() => setIsCreating(true)}>
-          新規メモ作成
-        </button>
+        showArchived ? null : (
+          <button className="card-create-btn" onClick={() => setIsCreating(true)}>
+            新規メモ作成
+          </button>
+        )
       )}
       {isCreating && (
         <div className="card creating">
@@ -165,6 +254,7 @@ const [newText, setNewText] = useState("")
             <SortableCard
               key={card.id}
               card={card}
+              disabled={showArchived}
               onClick={() => {
                 setEditingCard(card)
                 setEditText(card.text)
@@ -175,27 +265,157 @@ const [newText, setNewText] = useState("")
       </DndContext>
       {editingCard && (
         <div className="modal-overlay">
-          <div className="card creating modal">
-            <div className="card-actions">
-              <button className="regist-btn" onClick={handleUpdate}>
-                更新
-              </button>
-              <button
-                className="cancel-btn"
-                onClick={() => {
-                  setEditingCard(null)
-                  setEditText("")
-                }}
-              >
-                キャンセル
-              </button>
-            </div>
-            <textarea
-              value={editText}
-              onChange={e => setEditText(e.target.value)}
-              autoFocus
-            />
+          <div className="card creating modal-card">
+            {showArchived ? (
+              <>
+                <div className="card-actions">
+                  <div className="right-actions">
+                    <button
+                      className="delete-btn"
+                      onClick={() => setIsConfirmingDelete(true)}
+                    >
+                      削除
+                    </button>
+                    <button
+                      className="archive-btn"
+                      onClick={() => setIsConfirmingRestore(true)}
+                    >
+                      復元
+                    </button>
+                  </div>
+
+                  <div className="right-actions">
+                    <button
+                      className="cancel-btn"
+                      onClick={() => setEditingCard(null)}
+                    >
+                      キャンセル
+                    </button>
+                  </div>
+                </div>
+                <div className="memo-card">
+                  {editText}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="card-actions">
+                  <div className="right-actions">
+                    <button
+                      className="delete-btn"
+                      onClick={() => setIsConfirmingDelete(true)}
+                    >
+                      削除
+                    </button>
+                    {!showArchived && (
+                      <button
+                        className="archive-btn"
+                        onClick={() => setIsConfirmingArchive(true)}
+                      >
+                        完了
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="right-actions">
+                    <button className="regist-btn" onClick={handleUpdate}>
+                      更新
+                    </button>
+                    <button
+                      className="cancel-btn"
+                      onClick={() => {
+                        setEditingCard(null)
+                        setEditText("")
+                      }}
+                    >
+                      キャンセル
+                    </button>
+                  </div>
+                </div>
+
+                <textarea
+                  value={editText}
+                  onChange={e => setEditText(e.target.value)}
+                />
+              </>
+            )}
+
+
+            {isConfirmingDelete && (
+              <div className="confirm-overlay">
+                <div className="confirm-box">
+                  <p>本当に削除しますか？</p>
+
+                  <div className="confirm-actions">
+                    <button
+                      className="delete-btn"
+                      onClick={handleDeleteConfirmed}
+                    >
+                      削除する
+                    </button>
+
+                    <button
+                      className="cancel-btn"
+                      onClick={() => setIsConfirmingDelete(false)}
+                    >
+                      戻る
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {isConfirmingArchive && (
+              <div className="confirm-overlay">
+                <div className="confirm-box">
+                  <p>このメモを完了にしますか？</p>
+
+                  <div className="confirm-actions">
+                    <button
+                      className="archive-btn"
+                      onClick={handleArchiveConfirmed}
+                    >
+                      完了にする
+                    </button>
+
+                    <button
+                      className="cancel-btn"
+                      onClick={() => setIsConfirmingArchive(false)}
+                    >
+                      戻る
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {isConfirmingRestore && (
+              <div className="confirm-overlay">
+                <div className="confirm-box">
+                  <p>このメモを通常に戻しますか？</p>
+
+                  <div className="confirm-actions">
+                    <button
+                      className="archive-btn"
+                      onClick={handleRestoreConfirmed}
+                    >
+                      復元する
+                    </button>
+
+                    <button
+                      className="cancel-btn"
+                      onClick={() => setIsConfirmingRestore(false)}
+                    >
+                      戻る
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
+        </div>
+      )}
+      {toastMessage && (
+        <div className="toast">
+          {toastMessage}
         </div>
       )}
     </div>

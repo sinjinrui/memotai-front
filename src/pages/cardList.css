@@ -6,6 +6,45 @@ main {
   min-height: calc(100vh - 100px);
 }
 
+.toggle {
+  position: relative;
+  width: 145px;
+  height: 36px;
+  background: #fff5e8;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+/* スライダー */
+.toggle-slider {
+  position: absolute;
+  width: 70px;
+  height: 30px;
+  background: white;
+  border-radius: 999px;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* archivedのとき右へ */
+.toggle.archived .toggle-slider {
+  transform: translateX(70px);
+}
+
+.toggle-option {
+  flex: 1;
+  text-align: center;
+  z-index: 1;
+}
+
 .card-container {
   display: flex;
   flex-direction: column;
@@ -52,8 +91,14 @@ main {
 
 .card.creating > .card-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 8px;
+}
+
+.right-actions {
+  display: flex;
+  gap: 8px;
 }
 
 .regist-btn {
@@ -67,6 +112,19 @@ main {
   background-color: #ffffff;
   border: 1px solid #460000;
   margin-left: 5px;
+}
+
+.delete-btn {
+  font-weight: normal;
+  background-color: rgb(255, 123, 123);
+  border: 1px solid red;
+  color: #fff;
+}
+
+.archive-btn {
+  font-weight: normal;
+  background-color: rgb(255, 255, 152);
+  border: 1px solid rgb(0, 0, 0);
 }
 
 .card.creating textarea {
@@ -110,4 +168,70 @@ main {
   cursor: grab;
   user-select: none;
   margin-bottom: 8px;
+}
+
+
+
+.modal-card {
+  position: relative;
+  margin: 0 30px;
+  max-width: 600px; 
+}
+
+/* 上にかぶせるレイヤー */
+.confirm-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  border-radius: 8px;
+}
+
+/* 確認ボックス */
+.confirm-box {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 80%;
+  max-width: 300px;
+  border: 1px solid #000;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #c6ffc6;
+  color: #000;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  z-index: 2000;
+  animation: slideIn 0.2s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  button {
+    font-size: 18px;
+  }  
 }
