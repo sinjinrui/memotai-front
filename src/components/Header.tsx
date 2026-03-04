@@ -19,7 +19,7 @@ type NavItem = {
 };
 
 const baseNavItems: NavItem[] = [
-  { label: "キャラ対メモ", href: "#", icon: <FiFileText />, type: "anchor" },
+  { label: "キャラ対メモ", href: "/cardList", icon: <FiFileText />, type: "link" },
   { label: "使い方", href: "#", icon: <FiHelpCircle />, type: "anchor" },
   { label: "インフォメーション", href: "#", icon: <FiInfo />, type: "anchor" },
 ];
@@ -59,7 +59,7 @@ const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="header-inner">
-        <div className="logo">MyApp</div>
+        <div className="logo">メモ対</div>
 
         <button
           className={`hamburger ${isOpen ? "active" : ""}`}
