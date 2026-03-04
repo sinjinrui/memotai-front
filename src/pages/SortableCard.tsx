@@ -7,16 +7,20 @@ type Props = {
     text: string
   }
   onClick: () => void
+  disabled: boolean
 }
 
-export default function SortableCard({ card, onClick}: Props) {
+export default function SortableCard({ card, onClick, disabled = false}: Props) {
   const {
     attributes,
     listeners,
     setNodeRef,
     transform,
     transition
-  } = useSortable({ id: card.id })
+  } = useSortable({
+    id: card.id,
+    disabled
+  })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -33,13 +37,15 @@ export default function SortableCard({ card, onClick}: Props) {
       }}
       className="memo-card"
     >
-      <div
-        {...attributes}
-        {...listeners}
-        className="drag-handle"
-      >
-        ☰
-      </div>
+      { !disabled ? (
+        <div
+          {...attributes}
+          {...listeners}
+          className="drag-handle"
+        >
+          ☰
+        </div>
+      ) : (null)}
       <div className="memo-text">{card.text}</div>
       <div className="memo-footer"></div>
     </div>
