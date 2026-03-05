@@ -16,6 +16,7 @@ import {
 } from "@dnd-kit/sortable"
 import api from "../lib/axios";
 import SortableCard from "./SortableCard"
+import { useCharacterState } from "../context/CharacterContext"
 import "./cardList.css"
 
 type Card = {
@@ -24,6 +25,7 @@ type Card = {
 }
 
 export default function CardList() {
+  const { characterCode, enemyCode } = useCharacterState()
   const [cards, setCards] = useState<Card[]>([])
   const [isCreating, setIsCreating] = useState(false)
   const [newText, setNewText] = useState("")
@@ -31,14 +33,14 @@ export default function CardList() {
 
   useEffect(() => {
     fetchCards()
-  }, [showArchived])
+  }, [showArchived, characterCode, enemyCode])
 
   const fetchCards = async () => {
     try {
       const res = await api.get("/cards", {
         params: {
-          character_code: "001",
-          enemy_code: "002",
+          character_code: characterCode,
+          enemy_code: enemyCode,
           archived: showArchived
         }
       })
@@ -56,8 +58,8 @@ export default function CardList() {
       const res = await api.post("/cards", {
         card: {
           text: newText,
-          character_code: "001",
-          enemy_code: "002",
+          character_code: characterCode,
+          enemy_code: enemyCode,
         },
       })
 
@@ -90,7 +92,7 @@ export default function CardList() {
     try {
       await api.patch(`/cards/${active.id}/update_position`, {
         position: newIndex + 1,
-        list_scope_key: "001_002",
+        list_scope_key: `${characterCode}_${enemyCode}`,
       })
     } catch (e) {
       console.error(e)
