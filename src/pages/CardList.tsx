@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import {
   DndContext,
   closestCenter,
@@ -198,6 +198,11 @@ export default function CardList() {
       console.error(e)
     }
   }
+
+  const handleCardClick = useCallback((card: Card) => {
+    setEditingCard(card)
+    setEditText(card.text)
+  }, [])
   
   return (
     <div className="card-container" >
@@ -257,10 +262,7 @@ export default function CardList() {
               key={card.id}
               card={card}
               disabled={showArchived}
-              onClick={() => {
-                setEditingCard(card)
-                setEditText(card.text)
-              }}
+              onClick={() => handleCardClick(card)}
             />
           ))}
         </SortableContext>
