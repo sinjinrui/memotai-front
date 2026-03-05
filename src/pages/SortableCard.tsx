@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 
@@ -9,8 +10,7 @@ type Props = {
   onClick: () => void
   disabled: boolean
 }
-
-export default function SortableCard({ card, onClick, disabled = false}: Props) {
+function SortableCard({ card, onClick, disabled = false}: Props) {
   const {
     attributes,
     listeners,
@@ -22,10 +22,10 @@ export default function SortableCard({ card, onClick, disabled = false}: Props) 
     disabled
   })
 
-  const style = {
+  const style = useMemo(() => ({
     transform: CSS.Transform.toString(transform),
     transition
-  }
+  }), [transform, transition])
 
   return (
     <div
@@ -51,3 +51,5 @@ export default function SortableCard({ card, onClick, disabled = false}: Props) 
     </div>
   )
 }
+
+export default memo(SortableCard)
