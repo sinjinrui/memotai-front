@@ -19,7 +19,7 @@ const Login: React.FC = () => {
 
       login(res.data.access_token, res.data.refresh_token);
 
-      navigate("/");
+      navigate("/cardList");
     } catch (err) {
       console.error(err);
       alert("ログイン失敗");

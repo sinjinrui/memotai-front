@@ -1,0 +1,136 @@
+.home-container {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px 16px;
+  box-sizing: border-box;
+}
+
+/* タイトル */
+
+.home-title {
+  color: #ffd700;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.home-title h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.home-description {
+  font-size: 14px;
+  color: #fdedff;
+  line-height: 1.6;
+}
+
+/* cardList導線 */
+
+.home-start {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.home-start-btn {
+  display: inline-block;
+  padding: 14px 22px;
+  font-size: 16px;
+  border: 1px solid #8c3497;
+  background: linear-gradient(#65256d, #732e71);
+  color: #fdedff;
+  text-decoration: none;
+  border-radius: 8px;
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.home-container h2 {
+  color: #fff;
+}
+
+.home-start-btn svg {
+  text-align: center;
+}
+
+.home-start-btn:hover {
+  background: #fdedff;
+  color: #000;
+}
+
+/* 更新履歴 */
+
+.home-updates {
+  margin-bottom: 40px;
+  background: #fdedff;
+  border-radius: 5px;
+  padding: 0 10px;
+  min-height: 200px;
+}
+
+.home-updates h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.home-updates ul {
+  list-style: none;
+  padding: 0;
+}
+
+.home-updates li {
+  font-size: 14px;
+  padding: 6px 0;
+  border-bottom: 1px solid #333;
+}
+
+/* フッター */
+
+.home-footer {
+  border-top: 1px solid #fdedff;
+  padding-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #999;
+}
+
+.home-footer-links {
+  margin-top: 10px;
+}
+
+.home-footer-links a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #999;
+}
+
+/* -------------------------
+   PC / タブレット
+------------------------- */
+
+@media (min-width: 768px) {
+
+  .home-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  .home-title h1 {
+    font-size: 36px;
+  }
+
+  .home-description {
+    font-size: 16px;
+  }
+
+  .home-start-btn {
+    padding: 14px 30px;
+  }
+
+  .home-updates li {
+    font-size: 15px;
+  }
+
+}
