@@ -8,6 +8,7 @@ import {
 } from "react-icons/fi";
 import { FaPeopleArrows } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
+import { clearTokens } from "../utils/token";
 import "./Header.css";
 
 type NavItem = {
@@ -34,7 +35,8 @@ const Header: React.FC = () => {
       console.error("logout failed", e);
     } finally {
       setIsOpen(false);
-      await logout(); // 🔥 Context側でstate更新
+      clearTokens();
+      await logout();
       navigate("/login");
     }
   };
@@ -57,7 +59,12 @@ const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="header-inner">
-        <div className="logo">StratFramebook</div>
+        <Link
+          to="/"
+          className="logo"
+        >
+          SFb
+        </Link>
 
         <button
           className={`hamburger ${isOpen ? "active" : ""}`}

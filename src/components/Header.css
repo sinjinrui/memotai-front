@@ -19,6 +19,12 @@
 .logo {
   font-size: 18px;
   font-weight: bold;
+  color: #fdedff;
+}
+
+.logo:hover {
+  color:#fdedff;
+  opacity: 0.9;
 }
 
 /* PC表示 */

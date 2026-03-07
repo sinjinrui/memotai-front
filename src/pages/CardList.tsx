@@ -23,6 +23,7 @@ import api from "../lib/axios";
 import SortableCard from "./SortableCard"
 import { useCharacterState } from "../context/CharacterContext"
 import "./cardList.css"
+import { IoIosClose } from "react-icons/io";
 
 type Card = {
   id: number
@@ -298,7 +299,7 @@ export default function CardList() {
                       className="cancel-btn"
                       onClick={() => setEditingCard(null)}
                     >
-                      キャンセル
+                      <IoIosClose />
                     </button>
                   </div>
                 </div>
