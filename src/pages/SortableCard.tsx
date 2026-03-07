@@ -9,7 +9,7 @@ type Props = {
     id: number
     text: string
   }
-  onClick: () => void
+  onClick: (card: { id: number; text: string }) => void
   disabled: boolean
 }
 function SortableCard({ card, onClick, disabled = false}: Props) {
@@ -48,7 +48,7 @@ function SortableCard({ card, onClick, disabled = false}: Props) {
       <div
         onClick={(e) => {
           e.stopPropagation()
-          onClick()
+          onClick(card)
         }}
         className="memo-menu"
         >

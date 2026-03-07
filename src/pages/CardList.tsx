@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef, useMemo } from "react"
 import {
   DndContext,
   closestCenter,
@@ -36,22 +36,51 @@ export default function CardList() {
   const [isCreating, setIsCreating] = useState(false)
   const [newText, setNewText] = useState("")
   const [showArchived, setShowArchived] = useState(false)
+  const loadMoreRef = useRef(null)
+  const [hasMore, setHasMore] = useState(true)
+  const cardIds = useMemo(() => cards.map(c => c.id), [cards])
+  const lastIdRef = useRef<number | undefined>(undefined)
+  lastIdRef.current = cards[cards.length - 1]?.id
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor)
+  )
 
   useEffect(() => {
-    fetchCards()
+    setCards([])
+    setHasMore(true)
   }, [showArchived, characterCode, enemyCode])
 
-  const fetchCards = async () => {
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        fetchMoreCards()
+      }
+    })
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [hasMore, showArchived])
+
+  const fetchMoreCards = async () => {
+    const lastId = lastIdRef.current
     try {
       const res = await api.get("/cards", {
         params: {
           character_code: characterCode,
           enemy_code: enemyCode,
-          archived: showArchived
+          archived: showArchived,
+          last_id: lastId
         }
       })
 
-      setCards(res.data)
+      setCards(prev => [...prev, ...res.data])
+      if (res.data.length < 10) {
+        setHasMore(false)
+      }
     } catch (e) {
       console.error(e)
     }
@@ -78,11 +107,6 @@ export default function CardList() {
     }
   }
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor)
-  )
-
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over }
       = event
@@ -102,7 +126,6 @@ export default function CardList() {
       })
     } catch (e) {
       console.error(e)
-      fetchCards()
     }
   }
 
@@ -212,13 +235,10 @@ export default function CardList() {
   
   return (
     <div className="card-container" >
-      <div
-        className={`toggle ${showArchived ? "archived" : ""}`}
-        onClick={() => setShowArchived(prev => !prev)}
-      >
+      <div className={`toggle ${showArchived ? "archived" : ""}`}>
         <div className="toggle-slider" />
-        <span className="toggle-option"><FaPlay />通常</span>
-        <span className="toggle-option"><FaCheck />完了</span>
+        <span className="toggle-option" onClick={() =>  setShowArchived(false)}><FaPlay />通常</span>
+        <span className="toggle-option" onClick={() =>  setShowArchived(true)}><FaCheck />完了</span>
       </div>
       {!isCreating && (
         showArchived ? null : (
@@ -260,7 +280,7 @@ export default function CardList() {
         onDragEnd={handleDragEnd}
       >
         <SortableContext
-          items={cards.map(c => c.id)}
+          items={cardIds}
           strategy={verticalListSortingStrategy}
         >
           {cards.map(card => (
@@ -268,7 +288,7 @@ export default function CardList() {
               key={card.id}
               card={card}
               disabled={showArchived}
-              onClick={() => handleCardClick(card)}
+              onClick={handleCardClick}
             />
           ))}
         </SortableContext>
@@ -428,6 +448,7 @@ export default function CardList() {
           {toastMessage}
         </div>
       )}
+      <div ref={loadMoreRef}></div>
     </div>
   )
 }
