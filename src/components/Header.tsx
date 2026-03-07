@@ -1,5 +1,5 @@
 import api from "../lib/axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import {
   FiFileText,
@@ -26,7 +26,6 @@ const baseNavItems: NavItem[] = [
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { isAuthenticated, logout } = useAuth();
-  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
@@ -37,7 +36,6 @@ const Header: React.FC = () => {
       setIsOpen(false);
       clearTokens();
       await logout();
-      navigate("/login");
     }
   };
 
