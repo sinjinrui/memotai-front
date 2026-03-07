@@ -7,6 +7,11 @@ import {
   useSensor,
   useSensors
 } from "@dnd-kit/core"
+import { HiOutlinePlusSmall } from "react-icons/hi2";
+import { FaPlay, FaCheck } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
+import { FaTrashCan } from "react-icons/fa6";
+import { RxUpdate } from "react-icons/rx";
 import type { DragEndEvent } from "@dnd-kit/core"
 
 import {
@@ -211,13 +216,13 @@ export default function CardList() {
         onClick={() => setShowArchived(prev => !prev)}
       >
         <div className="toggle-slider" />
-        <span className="toggle-option">通常</span>
-        <span className="toggle-option">完了</span>
+        <span className="toggle-option"><FaPlay />通常</span>
+        <span className="toggle-option"><FaCheck />完了</span>
       </div>
       {!isCreating && (
         showArchived ? null : (
           <button className="card-create-btn" onClick={() => setIsCreating(true)}>
-            新規メモ作成
+            <HiOutlinePlusSmall />新規作成
           </button>
         )
       )}
@@ -228,7 +233,7 @@ export default function CardList() {
               className="regist-btn"
               onClick={handleCreate}
               >
-                登録
+                <FaPlay />登録
             </button>
             <button
               className="cancel-btn"
@@ -237,7 +242,7 @@ export default function CardList() {
                 setNewText("")
               }}
             >
-              キャンセル
+              <IoClose />
             </button>
           </div>
           <textarea
@@ -278,13 +283,13 @@ export default function CardList() {
                       className="delete-btn"
                       onClick={() => setIsConfirmingDelete(true)}
                     >
-                      削除
+                      <FaTrashCan />削除
                     </button>
                     <button
                       className="archive-btn"
                       onClick={() => setIsConfirmingRestore(true)}
                     >
-                      復元
+                      <FaPlay />復元
                     </button>
                   </div>
 
@@ -309,21 +314,21 @@ export default function CardList() {
                       className="delete-btn"
                       onClick={() => setIsConfirmingDelete(true)}
                     >
-                      削除
+                      <FaTrashCan />削除
                     </button>
                     {!showArchived && (
                       <button
                         className="archive-btn"
                         onClick={() => setIsConfirmingArchive(true)}
                       >
-                        完了
+                        <FaCheck />完了
                       </button>
                     )}
                   </div>
 
                   <div className="right-actions">
                     <button className="regist-btn" onClick={handleUpdate}>
-                      更新
+                      <RxUpdate />更新
                     </button>
                     <button
                       className="cancel-btn"
@@ -332,7 +337,7 @@ export default function CardList() {
                         setEditText("")
                       }}
                     >
-                      キャンセル
+                      <IoClose />
                     </button>
                   </div>
                 </div>
@@ -394,14 +399,14 @@ export default function CardList() {
             {isConfirmingRestore && (
               <div className="confirm-overlay">
                 <div className="confirm-box">
-                  <p>このメモを通常に戻しますか？</p>
+                  <p>このメモを通常に復元しますか？</p>
 
                   <div className="confirm-actions">
                     <button
                       className="archive-btn"
                       onClick={handleRestoreConfirmed}
                     >
-                      復元する
+                      <FaPlay />復元する
                     </button>
 
                     <button

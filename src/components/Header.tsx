@@ -3,11 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
   FiFileText,
-  FiHelpCircle,
   FiLogIn,
-  FiInfo,
   FiLogOut,
 } from "react-icons/fi";
+import { FaPeopleArrows } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 import "./Header.css";
 
@@ -20,8 +19,7 @@ type NavItem = {
 
 const baseNavItems: NavItem[] = [
   { label: "キャラ対メモ", href: "/cardList", icon: <FiFileText />, type: "link" },
-  { label: "使い方", href: "#", icon: <FiHelpCircle />, type: "anchor" },
-  { label: "インフォメーション", href: "#", icon: <FiInfo />, type: "anchor" },
+  { label: "みんなのメモ", href: "/cardList", icon: <FaPeopleArrows />, type: "link" },
 ];
 
 const Header: React.FC = () => {
@@ -59,7 +57,7 @@ const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="header-inner">
-        <div className="logo">メモ対</div>
+        <div className="logo">StratFramebook</div>
 
         <button
           className={`hamburger ${isOpen ? "active" : ""}`}

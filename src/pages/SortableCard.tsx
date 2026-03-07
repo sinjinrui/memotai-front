@@ -1,4 +1,6 @@
 import { memo, useMemo } from "react"
+import { FaArrowsUpDown } from "react-icons/fa6"
+import { MdEditNote } from "react-icons/md"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 
@@ -31,10 +33,6 @@ function SortableCard({ card, onClick, disabled = false}: Props) {
     <div
       ref={setNodeRef}
       style={style}
-      onClick={(e) => {
-        e.stopPropagation()
-        onClick()
-      }}
       className="memo-card"
     >
       { !disabled ? (
@@ -43,11 +41,19 @@ function SortableCard({ card, onClick, disabled = false}: Props) {
           {...listeners}
           className="drag-handle"
         >
-          ☰
+          <FaArrowsUpDown />
         </div>
       ) : (null)}
       <div className="memo-text">{card.text}</div>
-      <div className="memo-footer"></div>
+      <div
+        onClick={(e) => {
+          e.stopPropagation()
+          onClick()
+        }}
+        className="memo-menu"
+        >
+          <MdEditNote />
+        </div>
     </div>
   )
 }
