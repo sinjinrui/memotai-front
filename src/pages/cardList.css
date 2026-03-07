@@ -10,7 +10,7 @@ main {
   position: relative;
   width: 145px;
   height: 36px;
-  background: #fff5e8;
+  background: #fdedff;
   border-radius: 999px;
   display: flex;
   align-items: center;
@@ -54,18 +54,29 @@ main {
   max-width: 600px;
 
 
-  padding: 30px 0 120px 0;
+  padding: 5px 0 120px 0;
 }
 
 .card-create-btn {
+  background-color: #320039;
+  border: 1px solid #8c3497;
   color:#fff5e8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-create-btn:hover {
+  background-color: #8c3497;
+  opacity: 1;
 }
 
 .memo-card, .card.creating textarea {
+  display: flex;
   top: 80px;
-  background: #fff5e8;
-  color: #000;
-  padding: 1%;
+  background: #fdedff;
+  color: #000000;
+  padding: 10px 1%;
   border-radius: 14px;
   margin-bottom: 12px;
   user-select: none;
@@ -77,8 +88,9 @@ main {
 }
 
 .memo-card {
-  cursor: pointer;
-  
+  background: linear-gradient(#65256d, #732e71);
+  border: 1px solid #8c3497;
+  color: #ffffff;
 }
 
 .card.creating {
@@ -106,25 +118,43 @@ main {
   color: #fff;
 }
 
+.regist-btn:hover {
+  background-color: #acff4d;
+  opacity: 1;
+  color: #000;
+}
+
 .cancel-btn {
   font-weight: normal;
-  color: #000;
-  background-color: #ffffff;
-  border: 1px solid #460000;
   margin-left: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.cancel-btn:hover {
+  background-color: #fdedff;
+  opacity: 1;
+  color: #000;
 }
 
 .delete-btn {
   font-weight: normal;
-  background-color: rgb(255, 123, 123);
-  border: 1px solid red;
   color: #fff;
+}
+
+.delete-btn:hover {
+  background-color: rgb(255, 123, 123);
+  opacity: 1;
 }
 
 .archive-btn {
   font-weight: normal;
+}
+
+.archive-btn:hover {
   background-color: rgb(255, 255, 152);
-  border: 1px solid rgb(0, 0, 0);
+  color: #000;
+  opacity: 1;
 }
 
 .card.creating textarea {
@@ -146,12 +176,24 @@ main {
   line-height: 1.4;
 }
 
-.memo-card .memo-footer {
-  flex: 3;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  padding-top: 8px;
-  font-size: 12px;
-  color: #aaa;
+.memo-card .memo-menu {
+  cursor: pointer;
+  flex: 0.5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.memo-card .memo-menu svg {
+  opacity: 0.7;
+  font-size: 32px;
+  border-radius: 20%;
+  border: 1px solid #8c3497;
+}
+
+.memo-card .memo-menu svg:hover {
+  opacity: 1;
+  background-color: #8c3497;
 }
 
 .modal-overlay {
@@ -168,9 +210,19 @@ main {
   cursor: grab;
   user-select: none;
   margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0.7;
 }
 
+.drag-handle:hover {
+  opacity: 1;
+}
 
+.drag-handle:active {
+  cursor: grabbing;
+}
 
 .modal-card {
   position: relative;
@@ -191,7 +243,7 @@ main {
 
 /* 確認ボックス */
 .confirm-box {
-  background: white;
+  background: #fdedff;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
