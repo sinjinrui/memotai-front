@@ -4,18 +4,18 @@ import api from "../lib/axios";
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { isGuestLogin, login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
-
     const login_id = (form.elements.namedItem("login_id") as HTMLInputElement).value;
     const password = (form.elements.namedItem("password") as HTMLInputElement).value;
     const password_confirmation = (form.elements.namedItem("password_confirmation") as HTMLInputElement).value;
+    const url = isGuestLogin ? "/migrate" : "/signup"
 
     try {
-      const res = await api.post("/signup", {
+      const res = await api.post(url, {
         login_id,
         password,
         password_confirmation,
@@ -57,9 +57,11 @@ const Signup: React.FC = () => {
           </button>
         </form>
 
-        <p className="auth-link">
-          ログインは <Link to="/login">こちら</Link>
-        </p>
+        { !isGuestLogin && (
+          <p className="auth-link">
+            ログインは <Link to="/login">こちら</Link>
+          </p>
+        )}
       </div>
     </div>
   );

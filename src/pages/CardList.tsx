@@ -39,12 +39,11 @@ export default function CardList() {
   const loadMoreRef = useRef(null)
   const [hasMore, setHasMore] = useState(true)
   const cardIds = useMemo(() => cards.map(c => c.id), [cards])
-  const lastIdRef = useRef<number | undefined>(undefined)
-  lastIdRef.current = cards[cards.length - 1]?.id
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor)
   )
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     setCards([])
@@ -53,20 +52,23 @@ export default function CardList() {
 
   useEffect(() => {
     const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
+      if (entries[0].isIntersecting && hasMore && !loading) {
         fetchMoreCards()
       }
     })
 
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current)
-    }
+    const el = loadMoreRef.current
+    if (el) observer.observe(el)
 
-    return () => observer.disconnect()
-  }, [hasMore, showArchived])
+    return () => {
+      if (el) observer.unobserve(el)
+    }
+  }, [hasMore, loading, cards])
 
   const fetchMoreCards = async () => {
-    const lastId = lastIdRef.current
+    if (loading) return
+    setLoading(true)
+    const lastId = cards[cards.length - 1]?.id
     try {
       const res = await api.get("/cards", {
         params: {
@@ -76,13 +78,14 @@ export default function CardList() {
           last_id: lastId
         }
       })
-
-      setCards(prev => [...prev, ...res.data])
-      if (res.data.length < 10) {
+      setCards(prev => [...prev, ...res.data.cards])
+      if (!res.data.has_more) {
         setHasMore(false)
       }
     } catch (e) {
       console.error(e)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -235,10 +238,13 @@ export default function CardList() {
   
   return (
     <div className="card-container" >
-      <div className={`toggle ${showArchived ? "archived" : ""}`}>
-        <div className="toggle-slider" />
-        <span className="toggle-option" onClick={() =>  setShowArchived(false)}><FaPlay />通常</span>
-        <span className="toggle-option" onClick={() =>  setShowArchived(true)}><FaCheck />完了</span>
+      <div className="container-header">
+        <h2>キャラ対メモ</h2>
+        <div className={`toggle ${showArchived ? "archived" : ""}`}>
+          <div className="toggle-slider" />
+          <span className="toggle-option" onClick={() =>  setShowArchived(false)}><FaPlay />通常</span>
+          <span className="toggle-option" onClick={() =>  setShowArchived(true)}><FaCheck />完了</span>
+        </div>
       </div>
       {!isCreating && (
         showArchived ? null : (

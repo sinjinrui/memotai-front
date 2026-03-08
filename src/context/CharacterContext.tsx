@@ -10,13 +10,13 @@ type CharacterActions = {
   setEnemyCode: (code: string) => void
 }
 
-const STORAGE_KEY = "game_character_selection"
+const CHARACTERS_KEY = "game_character_selection"
 
 const CharacterStateContext = createContext<CharacterState | null>(null)
 const CharacterActionsContext = createContext<CharacterActions | null>(null)
 
 const loadInitialState = (): CharacterState => {
-  const stored = localStorage.getItem(STORAGE_KEY)
+  const stored = localStorage.getItem(CHARACTERS_KEY)
 
   if (!stored) {
     return {
@@ -48,7 +48,7 @@ export const CharacterProvider = ({ children }: { children: React.ReactNode }) =
 
   const save = (c: string, e: string) => {
     localStorage.setItem(
-      STORAGE_KEY,
+      CHARACTERS_KEY,
       JSON.stringify({
         characterCode: c,
         enemyCode: e

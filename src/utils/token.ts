@@ -15,3 +15,15 @@ export const clearTokens = () => {
   localStorage.removeItem("memotai_access_token");
   localStorage.removeItem("memotai_refresh_token");
 };
+
+export const setGuestLogin = () => {
+  localStorage.setItem("memotai_guest_login", "true");
+};
+
+export const getGuestLogin = () => {
+  return !!localStorage.getItem("memotai_guest_login");
+};
+
+export const clearGuestLogin = () => {
+  localStorage.removeItem("memotai_guest_login");
+};

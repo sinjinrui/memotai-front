@@ -18,7 +18,6 @@ const Login: React.FC = () => {
       const res = await api.post("/login", { login_id, password });
 
       login(res.data.access_token, res.data.refresh_token);
-
       navigate("/cardList");
     } catch (err) {
       console.error(err);
@@ -46,7 +45,6 @@ const Login: React.FC = () => {
             ログイン
           </button>
         </form>
-
         <p className="auth-link">
           ユーザー登録は <Link to="/signup">こちら</Link>
         </p>
