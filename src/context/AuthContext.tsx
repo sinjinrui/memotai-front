@@ -1,10 +1,12 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { setTokens, clearTokens } from "../utils/token";
+import { setTokens, clearTokens, setGuestLogin, getGuestLogin, clearGuestLogin } from "../utils/token";
 import api from "../lib/axios"
 
 type AuthContextType = {
   isAuthenticated: boolean;
+  isGuestLogin: boolean;
   login: (access: string, refresh: string) => void;
+  guestLogin: (access: string, refresh: string) => void;
   logout: () => Promise<void>;
 };
 
@@ -12,6 +14,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isGuestLogin, setIsGuestLogin] = useState(getGuestLogin());
 
   // 初回ロード時にtoken確認
   useEffect(() => {
@@ -24,6 +27,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsAuthenticated(true);
   };
 
+  const guestLogin = (access: string, refresh: string) => {
+    setTokens(access, refresh);
+    setIsAuthenticated(true);
+    setGuestLogin();
+  };
+
   const logout = async () => {
     try {
       await api.post("/logout");
@@ -32,11 +41,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } finally {
       clearTokens();
       setIsAuthenticated(false);
+      clearGuestLogin();
     }
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, isGuestLogin, login, logout, guestLogin }}>
       {children}
     </AuthContext.Provider>
   );

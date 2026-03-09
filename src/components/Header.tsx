@@ -1,14 +1,14 @@
 import api from "../lib/axios";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FiFileText,
   FiLogIn,
   FiLogOut,
 } from "react-icons/fi";
-import { FaPeopleArrows } from "react-icons/fa";
+import { FaPeopleArrows, FaUserEdit } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
-import { clearTokens } from "../utils/token";
+import { clearTokens, setGuestLogin } from "../utils/token";
 import "./Header.css";
 
 type NavItem = {
@@ -20,12 +20,12 @@ type NavItem = {
 
 const baseNavItems: NavItem[] = [
   { label: "キャラ対メモ", href: "/cardList", icon: <FiFileText />, type: "link" },
-  { label: "みんなのメモ", href: "/cardList", icon: <FaPeopleArrows />, type: "link" },
+  { label: "みんなのメモ", href: "/publicList", icon: <FaPeopleArrows />, type: "link" },
 ];
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, isGuestLogin, logout } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -39,20 +39,45 @@ const Header: React.FC = () => {
     }
   };
 
-  const authNavItem: NavItem = isAuthenticated
-    ? {
-        label: "ログアウト",
-        icon: <FiLogOut />,
-        type: "button",
-      }
-    : {
+  useEffect(() => {
+    setGuestLogin();
+  }, []);
+
+  useEffect(() => {
+    setGuestLogin();
+  }, [isAuthenticated]);
+
+  let authNavItems: NavItem[] = [];
+
+  if (!isAuthenticated) {
+    authNavItems = [
+      {
         label: "ログイン",
         href: "/login",
         icon: <FiLogIn />,
         type: "link",
-      };
+      },
+    ];
+  } else {
+    authNavItems = [
+      {
+        label: "ログアウト",
+        icon: <FiLogOut />,
+        type: "button",
+      },
+    ];
 
-  const navItems = [...baseNavItems, authNavItem];
+    if (isGuestLogin) {
+      authNavItems.push({
+        label: "ユーザー登録",
+        icon: <FaUserEdit />,
+        href: "/signup",
+        type: "link",
+      });
+    }
+  }
+
+  let navItems = isAuthenticated ? [...baseNavItems, ...authNavItems] : [...authNavItems];
 
   return (
     <header className="header">

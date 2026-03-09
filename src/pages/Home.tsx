@@ -1,5 +1,7 @@
-import { Link } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom";
 import { getRefreshToken } from "../utils/token";
+import { useAuth } from "../context/AuthContext";
+import api from "../lib/axios";
 import "./home.css"
 
 const Home: React.FC = () => {
@@ -28,6 +30,20 @@ const Home: React.FC = () => {
   const randomMessage = goListMessages[Math.floor(Math.random() * goListMessages.length)]
   const token = getRefreshToken()
   const isLoggedIn = !!token
+  const navigate = useNavigate();
+  const { guestLogin, isAuthenticated } = useAuth();
+  const handleGuestLogin = async () => {
+    try {
+      const res = await api.post("/guest_login");
+
+      guestLogin(res.data.access_token, res.data.refresh_token);
+      alert("ゲストユーザーは、セッションが途切れた場合に作成済みの全てのデータが失われます。継続的にご利用される場合は必ずユーザー登録を行ってください。\nまた、ゲストユーザーのうちに作成したデータはユーザー登録時に自動で引き継がれます。")
+      navigate("/cardList");
+    } catch (err) {
+      console.error(err);
+      alert("ログイン失敗");
+    }
+  };
 
   return (
     <div className="home-container">
@@ -35,7 +51,7 @@ const Home: React.FC = () => {
       <section className="home-title">
         <h1>StratFramebook</h1>
         <p className="home-description">
-          ストリートファイター6のキャラ対策メモを管理しながら、体が覚えたものは「完了」メモとしてアーカイブに残しておこう。考え、試し、時にはパクる。そんなスト6の集合知を目指して
+          ストリートファイター6のキャラ対策メモを管理しながら、体が覚えたものは「完了」メモとしてアーカイブに残しておきましょう。
         </p>
       </section>
 
@@ -48,6 +64,14 @@ const Home: React.FC = () => {
           <Link to="/login" className="home-start-btn">
             ログインしてキャラ対策を始める
           </Link>
+        )}
+        <Link to="/publicList" className="home-start-btn">
+          みんなのメモを見る
+        </Link>
+        {!isAuthenticated && (
+          <button onClick={handleGuestLogin} className="home-start-btn guest-btn">
+            ゲストユーザーで始める
+          </button>
         )}
       </section>
 
