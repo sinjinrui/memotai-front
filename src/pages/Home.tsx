@@ -1,5 +1,4 @@
 import { useNavigate, Link } from "react-router-dom";
-import { getRefreshToken } from "../utils/token";
 import { useAuth } from "../context/AuthContext";
 import api from "../lib/axios";
 import "./home.css"
@@ -16,10 +15,8 @@ const Home: React.FC = () => {
     "キャラ対策を始める",
     "キャラ対策を始める",
     "キャラ対策を始める",
-    "ﾃﾞｲﾔｯﾌﾝｯ",
     "楽しんでください...",
     "躱せる？躱せる？流石に？",
-    "もうﾋﾞﾝﾋﾞﾝ限界じゃあ！",
     "これが、俺の仕事だ...",
     "しょっぱいキャラ対にご不満のようだぜ～？",
     "対策不足のやつがくたばった、それだけのことだろう",
@@ -28,8 +25,6 @@ const Home: React.FC = () => {
   ]
 
   const randomMessage = goListMessages[Math.floor(Math.random() * goListMessages.length)]
-  const token = getRefreshToken()
-  const isLoggedIn = !!token
   const navigate = useNavigate();
   const { guestLogin, isAuthenticated } = useAuth();
   const handleGuestLogin = async () => {
@@ -51,12 +46,12 @@ const Home: React.FC = () => {
       <section className="home-title">
         <h1>StratFramebook</h1>
         <p className="home-description">
-          ストリートファイター6のキャラ対策メモを管理しながら、体が覚えたものは「完了」メモとしてアーカイブに残しておきましょう。
+          ストリートファイター6のキャラ対策メモを最短でチェック。マッチング直後に見直してから試合に臨むのが有効。
         </p>
       </section>
 
       <section className="home-start">
-        { isLoggedIn ? (
+        { isAuthenticated ? (
           <Link to="/cardList" className="home-start-btn">
             {randomMessage}
           </Link>
@@ -73,20 +68,31 @@ const Home: React.FC = () => {
             ゲストユーザーで始める
           </button>
         )}
+        {!isAuthenticated && (
+          <small className="term-discription">
+            ゲストユーザーとして開始することで、
+            <Link to="/terms">利用規約</Link>および
+            <Link to="/privacy">プライバシーポリシー</Link>
+            に同意したものとみなされます。
+          </small>
+        )}
       </section>
+
 
       <h2>更新履歴</h2>
       <section className="home-updates">
         <ul>
-          <li>2026-03-08 サイト公開</li>
+          <li>2026-03-11 サイト公開</li>
         </ul>
       </section>
 
       <footer className="home-footer">
-        <p>© StratFramebook</p>
+        <p>© 2026 StratFramebook</p>
         <div className="home-footer-links">
-          <a href="#">プライバシーポリシー</a>
-          <a href="#">お問い合わせ</a>
+          <Link to="/terms">利用規約</Link>
+          <span>・</span>
+          <Link to="/privacy">プライバシーポリシー</Link>
+          <span>お問い合わせは</span><a href="https://x.com/newtype_SNJ" target="_blank" rel="noopener noreferrer">XのDM</a><span>までお寄せください</span>
         </div>
       </footer>
 
