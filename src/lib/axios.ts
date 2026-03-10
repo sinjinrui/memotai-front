@@ -7,7 +7,7 @@ import {
 } from "../utils/token";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/api/v1",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 /* =========================
@@ -77,7 +77,7 @@ api.interceptors.response.use(
         const refreshToken = getRefreshToken();
 
         const res = await axios.post(
-          "http://localhost:3000/api/v1/refresh",
+          `${import.meta.env.VITE_API_BASE_URL}/refresh`,
           { refresh_token: refreshToken }
         );
 
