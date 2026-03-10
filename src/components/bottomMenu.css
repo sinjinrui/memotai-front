@@ -99,6 +99,23 @@
   z-index: 90;
 }
 
+.image-by {
+  height: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color:#fdedff;
+  padding: 5px 10px;
+}
+
+.image-by > p {
+  margin-right: 5px;
+}
+
+.image-by > a {
+  color: #f8e787;
+}
+
 /* スマホ */
 @media (max-width: 768px) {
   .bottom-bar {

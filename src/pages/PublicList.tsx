@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import api from "../lib/axios";
 import { useCharacterState } from "../context/CharacterContext"
+import { BottomCharacterMenu } from "../components";
 import "./cardList.css"
 import { FaRegCopy } from "react-icons/fa";
 import { IoReload } from "react-icons/io5";
@@ -113,6 +114,7 @@ export default function PublicList() {
           {toastMessage}
         </div>
       )}
+      <BottomCharacterMenu />
     </div>
   )
 }

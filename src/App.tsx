@@ -18,7 +18,6 @@ const App: React.FC = () => {
             <Route path="/publicList" element={<PublicList />} />
           </Routes>
         </main>
-        <BottomCharacterMenu />
       </BrowserRouter>
     </CharacterProvider>
 

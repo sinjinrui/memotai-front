@@ -5,13 +5,38 @@ import api from "../lib/axios";
 const Signup: React.FC = () => {
   const navigate = useNavigate();
   const { isGuestLogin, login } = useAuth();
+  const LOGIN_ID_REGEX = /^[a-zA-Z0-9_]{4,16}$/;
+  const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,32}$/
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const login_id = (form.elements.namedItem("login_id") as HTMLInputElement).value;
-    const password = (form.elements.namedItem("password") as HTMLInputElement).value;
-    const password_confirmation = (form.elements.namedItem("password_confirmation") as HTMLInputElement).value;
+
+    const formData = new FormData(form)
+
+    const login_id = formData.get("login_id") as string
+    const password = formData.get("password") as string
+    const password_confirmation = formData.get("password_confirmation") as string
+
+    if (!LOGIN_ID_REGEX.test(login_id)) {
+      alert("ログインIDは4〜16文字の英数字と_のみ使用できます");
+      return;
+    }
+
+    if (password.length < 8) {
+      alert("パスワードは8文字以上にしてください");
+      return;
+    }
+
+    if (password !== password_confirmation) {
+      alert("パスワード確認が一致しません");
+      return;
+    }
+  
+    if (!PASSWORD_REGEX.test(password)) {
+      alert("パスワードは8〜32文字の英数字で、英字と数字をそれぞれ1文字以上含めてください");
+      return;
+    }
     const url = isGuestLogin ? "/migrate" : "/signup"
 
     try {
@@ -39,12 +64,27 @@ const Signup: React.FC = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>ログインID</label>
-            <input name="login_id" required />
+            <input
+              name="login_id"
+              required
+              pattern="[A-Za-z0-9_]{4,16}"
+              title="4〜16文字の英数字と_のみ使用できます"
+            />
+            <small>4〜16文字の英数字と_のみ使用できます</small>
           </div>
 
           <div className="form-group">
             <label>パスワード</label>
-            <input name="password" type="password" required />
+            <input
+              name="password"
+              type="password"
+              required
+              minLength={8}
+              maxLength={32}
+              pattern="(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,32}"
+              title="8〜32文字の英数字で、英字と数字をそれぞれ1文字以上含めてください"
+            />
+            <small>8〜32文字の英数字で、英字と数字をそれぞれ1文字以上含めてください</small>
           </div>
 
           <div className="form-group">

@@ -1,6 +1,12 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { setTokens, clearTokens, setGuestLogin, getGuestLogin, clearGuestLogin } from "../utils/token";
-import api from "../lib/axios"
+import { createContext, useContext, useState } from "react";
+import {
+  setTokens,
+  clearTokens,
+  setGuestLogin,
+  getGuestLogin,
+  clearGuestLogin
+} from "../utils/token";
+import api from "../lib/axios";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -10,27 +16,29 @@ type AuthContextType = {
   logout: () => Promise<void>;
 };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isGuestLogin, setIsGuestLogin] = useState(getGuestLogin());
 
-  // 初回ロード時にtoken確認
-  useEffect(() => {
-    const token = localStorage.getItem("memotai_access_token");
-    setIsAuthenticated(!!token);
-  }, []);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem("memotai_access_token")
+  );
+
+  const [isGuestLogin, setIsGuestLogin] = useState(
+    getGuestLogin()
+  );
 
   const login = (access: string, refresh: string) => {
     setTokens(access, refresh);
     setIsAuthenticated(true);
+    setIsGuestLogin(false);
   };
 
   const guestLogin = (access: string, refresh: string) => {
     setTokens(access, refresh);
-    setIsAuthenticated(true);
     setGuestLogin();
+    setIsAuthenticated(true);
+    setIsGuestLogin(true);
   };
 
   const logout = async () => {
@@ -40,13 +48,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error(e);
     } finally {
       clearTokens();
-      setIsAuthenticated(false);
       clearGuestLogin();
+      setIsAuthenticated(false);
+      setIsGuestLogin(false);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isGuestLogin, login, logout, guestLogin }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        isGuestLogin,
+        login,
+        guestLogin,
+        logout
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
