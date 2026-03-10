@@ -96,7 +96,12 @@ const Signup: React.FC = () => {
             登録
           </button>
         </form>
-
+        <small className="terms-notice">
+          ユーザー登録を行うことで、
+          <Link to="/terms">利用規約</Link>および
+          <Link to="/privacy">プライバシーポリシー</Link>
+          に同意したものとみなされます。
+        </small>
         { !isGuestLogin && (
           <p className="auth-link">
             ログインは <Link to="/login">こちら</Link>

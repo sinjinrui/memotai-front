@@ -1,0 +1,20 @@
+.legal-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 10px 20px;
+  line-height: 1.8;
+  color: #fff;
+  max-width: 600px;
+}
+
+.legal-container h2 {
+  margin-bottom: 24px;
+  
+}
+
+.legal-container h3 {
+  margin-top: 28px;
+  padding: 0.5em;/*文字周りの余白*/
+  background: #69396f;/*背景色*/
+  border-left: solid 5px #ffaf58;/*左線（実線 太さ 色）*/
+}
