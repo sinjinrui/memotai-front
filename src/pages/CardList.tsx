@@ -21,6 +21,7 @@ import {
 } from "@dnd-kit/sortable"
 import api from "../lib/axios";
 import SortableCard from "./SortableCard"
+import { BottomCharacterMenu } from "../components";
 import { useCharacterState } from "../context/CharacterContext"
 import "./cardList.css"
 import { IoIosClose } from "react-icons/io";
@@ -455,6 +456,7 @@ export default function CardList() {
         </div>
       )}
       <div ref={loadMoreRef}></div>
+      <BottomCharacterMenu />
     </div>
   )
 }

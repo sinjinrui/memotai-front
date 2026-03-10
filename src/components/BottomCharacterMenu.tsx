@@ -47,7 +47,6 @@ export default function BottomCharacterMenu() {
 
   return (
     <>
-      {/* Drawer */}
       <div className={`drawer ${openSide ? "open" : ""}`}>
         <div className="drawer-content">
           {characters.map((char) => (
@@ -62,12 +61,10 @@ export default function BottomCharacterMenu() {
         </div>
       </div>
 
-      {/* Overlay */}
       {openSide && (
         <div className="overlay" onClick={() => setOpenSide(null)} />
       )}
 
-      {/* Bottom Bar */}
       <div className="bottom-bar">
         <div className="character-icon you">
           <img

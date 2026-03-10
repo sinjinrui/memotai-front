@@ -1,6 +1,6 @@
 import api from "../lib/axios";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
 import {
   FiFileText,
   FiLogIn,
@@ -8,7 +8,7 @@ import {
 } from "react-icons/fi";
 import { FaPeopleArrows, FaUserEdit } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
-import { clearTokens, setGuestLogin } from "../utils/token";
+import { clearTokens } from "../utils/token";
 import "./Header.css";
 
 type NavItem = {
@@ -26,26 +26,18 @@ const baseNavItems: NavItem[] = [
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { isAuthenticated, isGuestLogin, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await api.post("/logout");
+      await logout();
     } catch (e) {
       console.error("logout failed", e);
     } finally {
       setIsOpen(false);
-      clearTokens();
-      await logout();
+      navigate("/");
     }
   };
-
-  useEffect(() => {
-    setGuestLogin();
-  }, []);
-
-  useEffect(() => {
-    setGuestLogin();
-  }, [isAuthenticated]);
 
   let authNavItems: NavItem[] = [];
 
