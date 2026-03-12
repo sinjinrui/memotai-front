@@ -1,4 +1,3 @@
-import api from "../lib/axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import {
@@ -8,7 +7,6 @@ import {
 } from "react-icons/fi";
 import { FaPeopleArrows, FaUserEdit } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
-import { clearTokens } from "../utils/token";
 import "./Header.css";
 
 type NavItem = {
