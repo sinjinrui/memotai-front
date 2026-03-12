@@ -82,7 +82,7 @@ const Home: React.FC = () => {
       <h2>更新履歴</h2>
       <section className="home-updates">
         <ul>
-          <li>2026-03-11 サイト公開</li>
+          <li>2026-03-13 サイト公開</li>
         </ul>
       </section>
 
