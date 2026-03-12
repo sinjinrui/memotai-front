@@ -15,7 +15,7 @@ type Card = {
 export default function PublicList() {
   const { characterCode, enemyCode } = useCharacterState()
   const [cards, setCards] = useState<Card[]>([])
-  const [toastMessage, setToastMessage] = useState<string | null>(null)
+  const [toastMessage] = useState<string | null>(null)
   const [isConfirmingCopy, setIsConfirmingCopy] = useState(false)
   const navigate = useNavigate();
   const [copyingCard, setCopyingCard] = useState<Card | null>(null)
