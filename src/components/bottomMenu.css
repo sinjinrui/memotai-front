@@ -91,6 +91,22 @@
   cursor: pointer;
 }
 
+.char-item:hover {
+  opacity: 0.9;
+}
+
+.selected-player {
+  background-color: #fff;
+}
+
+.selected-enemy {
+  background-color: #f8e787;
+}
+
+.selected-both {
+  background: linear-gradient(#fff, #f8e787);
+}
+
 /* 背景オーバーレイ */
 .overlay {
   position: fixed;

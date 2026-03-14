@@ -86,6 +86,11 @@ main {
   opacity: 1;
 }
 
+.card-create-btn:active {
+  background-color: #fff5e8;
+  color: #000;
+}
+
 .memo-card, .card.creating textarea {
   display: flex;
   top: 80px;
@@ -100,6 +105,10 @@ main {
   transition: transform 0.15s ease;
   resize: none;
   min-height: 80px;
+}
+
+textarea {
+  font-size: 16px;
 }
 
 .memo-card {

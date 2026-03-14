@@ -5,9 +5,14 @@ main {
 .nav-button {
   background-color: #320039;
   border: none;
-  border-bottom: 1px solid #65256d;
 }
 
 body {
   background: #320039;
+}
+
+@media (max-width: 768px) {
+  .nav-button {
+    border-bottom: 1px solid #65256d;
+  }
 }
