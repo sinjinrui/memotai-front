@@ -55,7 +55,10 @@ export default function BottomCharacterMenu() {
               src={char.image}
               alt={char.name}
               onClick={() => handleSelect(char)}
-              className="char-item"
+              className={`char-item
+                ${player.name === char.name ? "selected-player" : ""}
+                ${enemy.name === char.name ? "selected-enemy" : ""}
+                ${player.name === char.name && enemy.name === char.name ? "selected-both" : ""}`}
             />
           ))}
         </div>
