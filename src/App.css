@@ -1,10 +1,13 @@
 main {
   width: 100%;
-  background: #320039;
 }
 
 .nav-button {
   background-color: #320039;
   border: none;
   border-bottom: 1px solid #65256d;
+}
+
+body {
+  background: #320039;
 }

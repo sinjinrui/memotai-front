@@ -78,6 +78,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0;
 }
 
 .card-create-btn:hover {
@@ -135,6 +136,7 @@ main {
 .regist-btn {
   font-weight: normal;
   color: #fff;
+  padding: 1px 6px;
 }
 
 .regist-btn:hover {
@@ -148,6 +150,7 @@ main {
   margin-left: 5px;
   display: flex;
   align-items: center;
+  padding: 1px 6px;
 }
 
 .cancel-btn:hover {
@@ -159,6 +162,7 @@ main {
 .delete-btn {
   font-weight: normal;
   color: #fff;
+  padding: 1px 6px;
 }
 
 .delete-btn:hover {
@@ -168,6 +172,7 @@ main {
 
 .archive-btn {
   font-weight: normal;
+  padding: 1px 6px;
 }
 
 .archive-btn:hover {
@@ -309,6 +314,9 @@ main {
 }
 
 @media (max-width: 768px) {
+  main {
+    padding-top: 10px;
+  }
   button {
     font-size: 18px;
   }  
