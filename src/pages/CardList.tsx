@@ -3,7 +3,8 @@ import {
   DndContext,
   closestCenter,
   KeyboardSensor,
-  PointerSensor,
+  MouseSensor,
+  TouchSensor,
   useSensor,
   useSensors
 } from "@dnd-kit/core"
@@ -41,7 +42,13 @@ export default function CardList() {
   const [hasMore, setHasMore] = useState(true)
   const cardIds = useMemo(() => cards.map(c => c.id), [cards])
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(MouseSensor),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 150,
+        tolerance: 5
+      }
+    }),
     useSensor(KeyboardSensor)
   )
   const [loading, setLoading] = useState(false)

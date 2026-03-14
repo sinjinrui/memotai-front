@@ -119,4 +119,8 @@
     padding: 14px 16px;
     border-bottom: 1px solid #65256d;
   }
+
+  .header-inner {
+    padding: 0 16px;
+  }
 }

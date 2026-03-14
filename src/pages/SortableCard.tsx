@@ -12,7 +12,8 @@ type Props = {
   onClick: (card: { id: number; text: string }) => void
   disabled: boolean
 }
-function SortableCard({ card, onClick, disabled = false}: Props) {
+
+function SortableCard({ card, onClick, disabled = false }: Props) {
   const {
     attributes,
     listeners,
@@ -35,25 +36,28 @@ function SortableCard({ card, onClick, disabled = false}: Props) {
       style={style}
       className="memo-card"
     >
-      { !disabled ? (
+      {!disabled ? (
         <div
           {...attributes}
           {...listeners}
           className="drag-handle"
+          style={{ touchAction: "none" }}
         >
           <FaArrowsUpDown />
         </div>
-      ) : (null)}
+      ) : null}
+
       <div className="memo-text">{card.text}</div>
+
       <div
         onClick={(e) => {
           e.stopPropagation()
           onClick(card)
         }}
         className="memo-menu"
-        >
-          <MdEditNote />
-        </div>
+      >
+        <MdEditNote />
+      </div>
     </div>
   )
 }
