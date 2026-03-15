@@ -5,6 +5,7 @@ import {
   FiLogIn,
   FiLogOut,
 } from "react-icons/fi";
+import { TbPigMoney } from "react-icons/tb";
 import { FaPeopleArrows, FaUserEdit } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 import "./Header.css";
@@ -13,12 +14,13 @@ type NavItem = {
   label: string;
   href?: string;
   icon: React.ReactNode;
-  type: "link" | "anchor" | "button";
+  type: "link" | "anchor" | "button" | "ex_link";
 };
 
 const baseNavItems: NavItem[] = [
   { label: "キャラ対メモ", href: "/cardList", icon: <FiFileText />, type: "link" },
   { label: "みんなのメモ", href: "/publicList", icon: <FaPeopleArrows />, type: "link" },
+  { label: "お賽銭箱", href: "https://note.com/newtype_snj/m/m4f44a00c091c", icon: <TbPigMoney />, type: "ex_link" },
 ];
 
 const Header: React.FC = () => {
@@ -97,6 +99,22 @@ const Header: React.FC = () => {
                   key={item.label}
                   to={item.href}
                   className="nav-item"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <span className="icon">{item.icon}</span>
+                  <span>{item.label}</span>
+                </Link>
+              );
+            }
+
+            if (item.type === "ex_link" && item.href) {
+              return (
+                <Link
+                  key={item.label}
+                  to={item.href}
+                  className="nav-item"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => setIsOpen(false)}
                 >
                   <span className="icon">{item.icon}</span>

@@ -100,6 +100,7 @@ const Home: React.FC = () => {
       <h2>更新履歴</h2>
       <section className="home-updates">
         <ul>
+          <li>2026-03-15 ヘッダーメニューにお賽銭箱を追加</li>
           <li>2026-03-14 一部UIを修正</li>
           <li>2026-03-13 サイト公開</li>
         </ul>
